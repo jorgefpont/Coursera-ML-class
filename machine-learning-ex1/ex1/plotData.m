@@ -17,11 +17,6 @@ figure; % open a new figure window
 %       markers larger by using plot(..., 'rx', 'MarkerSize', 10);
 % ============================================================
 
-% x and y data
-data = load('ex1data1.txt');
-x = data(:, 1); y = data(:, 2);
-m = length(y);
-
 % labels
 plot(x, y, 'rx', 'MarkerSize', 10);
 ylabel('Profit in $10,000s');
