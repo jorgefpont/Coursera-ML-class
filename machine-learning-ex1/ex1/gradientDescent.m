@@ -16,9 +16,21 @@ for iter = 1:num_iters
     % Hint: While debugging, it can be useful to print out the values
     %       of the cost function (computeCost) and gradient here.
     %
+s0=0;
+s1=0;
+i=0;
+for i=1:m
 
-    X = [ones(m, 1), data(:,1)];  % Add a column of ones to x
-    theta = zeros(2, 1);          % initialize fitting parameters
+  h = X(i,:) * theta;       % calculate h_theta
+  s0 = s0 + (h - y(i));     % calculate error sum term for theta-0
+  s1 = s1 + (h - y(i))*X(i,2); % calculate error sum term for theta-1
+
+end
+
+s0 = (alpha/m)*s0;
+s1 = (alpha/m)*s1;
+S = [s0 ; s1];
+theta = theta - S;
 
     % ============================================================
 
