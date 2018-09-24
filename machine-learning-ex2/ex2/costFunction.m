@@ -19,6 +19,28 @@ grad = zeros(size(theta));
 %
 % Note: grad should have the same dimensions as theta
 %
+% add 1st column of ones to X (ie add x0)
+% X =  [ones(size(X), 1) X];
+% this was not needed, already done in the calling function
+
+% h = g(z) = g(X*theta) -- vectorized implementation of h(X)
+z = X * theta;
+h = (1+exp(-z)).^-1;
+
+% J(theta) = (1/m) * ( (-yT log(h)) - (1-y)T log(1-h) )
+J = (1/m) * ...
+    (   ( transpose(-y) * log(h) ) - ...
+        ( transpose(1-y) * log(1-h) ) ...
+    );
+   
+% works up to now !!!
+
+% grad_J = (1/m) * XT * (h - y)
+grad = (1/m) * ...
+    transpose(X) * ...
+    (h - y);
+    
+    
 
 
 

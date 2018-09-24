@@ -14,12 +14,16 @@ p = zeros(m, 1);
 %               your learned logistic regression parameters. 
 %               You should set p to a vector of 0's and 1's
 %
+% h = g(z) = g(X*theta) -- vectorized implementation of h(X)
+p = X * theta;
 
-
-
-
-
-
+for i=1:m,
+if p(i)>=0,
+p(i)=1;
+elseif p(i)<0,
+p(i)=0;
+end
+end;
 
 % =========================================================================
 
