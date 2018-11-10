@@ -29,11 +29,15 @@ X = [ones(m, 1) X];
 %       are in rows, then, you can use max(A, [], 2) to obtain the max 
 %       for each row.
 %       
+% =========================================================================
 
+% h = g(z) = g(X*theta) -- vectorized implementation of h(X)
+% first calculate z = X*all_theta, an m x 10 matrix
+g = sigmoid(X * transpose(all_theta));
 
-
-
-
+% for each row of p, pick the largest value
+% p represents the index
+[highest_prob, p] = max(g,[],2);
 
 
 % =========================================================================
