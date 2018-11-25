@@ -41,12 +41,6 @@ Theta2_grad = zeros(size(Theta2));
 % Add ones to the X data matrix
 X = [ones(m, 1) X];
 
-% check sizes
-%fprintf('Size y: '), size(y)
-%fprintf('Size X: '), size(X)
-%fprintf('Size Theta1: '), size(Theta1)
-%fprintf('Size Theta2: '), size(Theta2)
-
 % =============================================================
 % Part 1: Feedforward the neural network and return the cost in the
 %         variable J. After implementing Part 1, you can verify that your
@@ -69,14 +63,6 @@ a2 = [ones(ma2, 1) a2];
 % in this case a3 is a 5000 * 10, so vectors y(i) are rows
 z3 = a2 * transpose(Theta2);
 a3 = sigmoid(z3);
-
-% check sizes
-%fprintf('\n*****Beginning run ...\n\n')
-%fprintf('Size z2: '), size(z2)
-%fprintf('Size a2: '), size(a2)
-%fprintf('Size a2: '), size(a2)
-%fprintf('Size z3: '), size(z3)
-%fprintf('Size a3: '), size(a3)
 
 % construct y_matrix
 y_matrix = zeros(m,num_labels);
@@ -127,10 +113,48 @@ J = J + reg_term;
 %               first time.
 % =============================================================
 
+% loop over all the training example
+%for i=1:size(X,1),
+for i=1:size(X,1),
 
+  % X matrix already has ones column added to it
+  % data for ith training ex
+  a1i = X(i,:)';   % get X(i) vector, transpose it for vec
+  yi = y_matrix(i,:)';   % from y_matrix above get y(i), transpose it for vec
+  
+  % calculate z(2) = theta1 * a(1), then a(2) = g(z(2)); a(1) is X
+  z2i = Theta1 * a1i;
+  a2i = sigmoid(z2i);
+  
+  % add one to the a2i vector
+  a2i = [1; a2i];
+  
+  % calculate z3i, then a3i
+  z3i = Theta2 * a2i;
+  a3i = sigmoid(z3i);
+  
+  del3i = a3i-yi;
+  
+  % calculate del2i
+  del2i = (Theta2' * del3i) .* sigmoidGradient([1; z2i]);
+  del2i = del2i(2:end);  % remove del2i(0)
+  
+  % accumulate the gradients
+  Theta2_grad = Theta2_grad + del3i * a2i';
+  Theta1_grad = Theta1_grad + del2i * a1i';
 
+end;
 
+Theta2_grad = (1/m) .* Theta2_grad;
+Theta1_grad = (1/m) .* Theta1_grad;
 
+% check sizes
+%fprintf('\n*****Beginning run ...\n\n')
+%fprintf('Size z2: '), size(z2)
+%fprintf('Size a2: '), size(a2)
+%fprintf('Size a2: '), size(a2)
+%fprintf('Size z3: '), size(z3)
+%fprintf('Size a3: '), size(a3)
 
 % =============================================================
 % Part 3: Implement regularization with the cost function and gradients.
