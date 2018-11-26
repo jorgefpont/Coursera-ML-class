@@ -148,14 +148,6 @@ end;
 Theta2_grad = (1/m) .* Theta2_grad;
 Theta1_grad = (1/m) .* Theta1_grad;
 
-% check sizes
-%fprintf('\n*****Beginning run ...\n\n')
-%fprintf('Size z2: '), size(z2)
-%fprintf('Size a2: '), size(a2)
-%fprintf('Size a2: '), size(a2)
-%fprintf('Size z3: '), size(z3)
-%fprintf('Size a3: '), size(a3)
-
 % =============================================================
 % Part 3: Implement regularization with the cost function and gradients.
 %
@@ -165,15 +157,20 @@ Theta1_grad = (1/m) .* Theta1_grad;
 %               and Theta2_grad from Part 2.
 % =============================================================
 
+% a(:,2:end) all columns except the first
+% a(:,1) first column
 
+% regularized Theta1_grad
+grad_reg_term_1 = (lambda/m) .* Theta1(:, 2:end);
+Theta1_grad = [ Theta1_grad(:,1), (Theta1_grad(:,2:end) + grad_reg_term_1) ];
 
-
-
+% regularized Theta2_grad
+grad_reg_term_2 = (lambda/m) .* Theta2(:, 2:end);
+Theta2_grad = [ Theta2_grad(:,1), (Theta2_grad(:,2:end) + grad_reg_term_2) ];
 
 % =========================================================================
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 end
