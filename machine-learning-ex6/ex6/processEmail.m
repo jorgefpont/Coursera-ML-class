@@ -97,6 +97,9 @@ while ~isempty(email_contents)
     %       str2). It will return 1 only if the two strings are equivalent.
     %
     
+    % loop goes thru the whole list each time, 
+    % does not break once a match is found
+    
     for idx=1 : size(vocabList,1),
       str2 = vocabList{idx};
       if strcmp(str, str2) == 1,
