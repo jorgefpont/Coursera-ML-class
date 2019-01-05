@@ -38,22 +38,42 @@ Theta_grad = zeros(size(Theta));
 %                 partial derivatives w.r.t. to each element of X
 %        Theta_grad - num_users x num_features matrix, containing the 
 %                     partial derivatives w.r.t. to each element of Theta
-%
+% ============================================================
 
+% == TURNS OUT I DID NOT NEED TO DO THIS
+% init X and theta matrices w small random values (not unrolled)
+% tempX = (rand(num_movies,num_features).-0.5)/100
+% tempTheta = (rand(num_users,num_features).-0.5)/100
+% Yhat =  tempX * tempTheta'   % Y = Theta-transpose * X
+% == yikes
 
+% Compute the cost function
+Yhat =  X * Theta';
+Yhat = Yhat .* R;         % to get values only where R(i,j)=1
+J = ((Yhat - Y).^2);
+J = 0.5 * sum(sum(J));
 
+% add regularization
+J = J + ( sum(sum(Theta.^2)) + sum(sum(X.^2)) ) * (lambda/2);
 
+% Compute the partial derivative of the cost function wrt x, X_grad
+% The X gradient is the product of the error factor and the Theta matrix. 
+% The sum is computed automatically by the vector multiplication. 
+% Dimensions are (movies x features)
+X_grad = (Yhat - Y) * Theta;
 
+% add regularization
+X_grad = X_grad + (lambda*X);
 
+% Compute the partial derivative of the cost function wrt theta,Theta_grad
+% The Theta gradient is the product of the error factor and the X matrix. 
+% A transposition may be needed. 
+% The sum is computed automatically by the vector multiplication. 
+% Dimensions are (users x features)
+Theta_grad = (Yhat - Y)' * X;
 
-
-
-
-
-
-
-
-
+% add regularization
+Theta_grad = Theta_grad + (lambda*Theta);
 
 % =============================================================
 
